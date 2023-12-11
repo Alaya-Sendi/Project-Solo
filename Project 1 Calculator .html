@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #calculator {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 300px;
+        }
+
+        #result {
+            padding: 10px;
+            text-align: right;
+            font-size: 1.5em;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        button {
+            padding: 15px;
+            font-size: 1em;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #eee;
+        }
+
+        #clear {
+            grid-column: span 2;
+        }
+
+        #equals {
+            grid-column: span 4;
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        #equals:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<div id="calculator">
+    <div id="result">0</div>
+    <div id="buttons">
+        <button>7</button>
+        <button>8</button>
+        <button>9</button>
+        <button class="operator">/</button>
+        <button>4</button>
+        <button>5</button>
+        <button>6</button>
+        <button class="operator">*</button>
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button class="operator">-</button>
+        <button>0</button>
+        <button class="operator" id="clear">C</button>
+        <button class="operator">+</button>
+        <button id="equals" class="operator">=</button>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        let currentInput = "";
+        let currentOperator = "";
+
+        $('button').on('click', function () {
+            const buttonValue = $(this).text();
+
+            if (buttonValue >= '0' && buttonValue <= '9') {
+                currentInput += buttonValue;
+            } else if (buttonValue === 'C') {
+                currentInput = "";
+                currentOperator = "";
+            } else if (buttonValue === '=') {
+                calculateResult();
+            } else {
+                currentOperator = buttonValue;
+                currentInput += ' ' + currentOperator + ' ';
+            }
+
+            updateDisplay();
+        });
+
+        function calculateResult() {
+            const parts = currentInput.split(' ');
+            const num1 = parseFloat(parts[0]);
+            const num2 = parseFloat(parts[2]);
+
+            switch (currentOperator) {
+                case '+':
+                    currentInput = num1 + num2;
+                    break;
+                case '-':
+                    currentInput = num1 - num2;
+                    break;
+                case '*':
+                    currentInput = num1 * num2;
+                    break;
+                case '/':
+                    currentInput = num1 / num2;
+                    break;
+            }
+
+            currentOperator = "";
+        }
+
+        function updateDisplay() {
+            $('#result').text(currentInput || "0");
+        }
+    });
+</script>
+
+</body>
+</html>
